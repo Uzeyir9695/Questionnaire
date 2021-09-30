@@ -12,7 +12,7 @@
             <div class="form-group mr-3">
                 <label for="city">ქალაქი</label>
                 <select name="filter_city" id="city"  class="form-control">
-                  <option value="">აირჩიე</option>
+                  <option value=" ">აირჩიე</option>
                   @foreach ($addresses->unique('city') as $address)
                   <option value="{{ $address->city }}">{{ $address->city }}</option>
                   @endforeach
