@@ -27,27 +27,26 @@ class QuestionnaireController extends Controller
         $addresses = AddressSeeder::get();
         $education = EducationSeeder::get();
         $jobs = JobSeeder::get();
-        $candidate = Candidate::with(['education', 'addresses', 'jobs']);
+        $unify = Candidate::with(['education', 'addresses', 'jobs']);
         
         if($request->has('filter_edu') or $request->has('filter_job') or $request->has('filter_city') or $request->has('filter_district') or $request->has('filter_sex')  ){
-            $candidates = $candidate->where('sex', $request->filter_sex)
-            ->orWhereHas('education', function( Builder $query) use ($request){
+            $candidates = $unify->where('sex', $request->filter_sex)
+            ->orWhereHas('addresses', function($query) use ($request) {
+                $query->where('city', $request->filter_city)
+                ->orWhere('district', $request->filter_district);
+
+            })->orWhereHas('education', function($query) use ($request){
                 $query->where('education', $request->filter_edu); 
 
-            })->orWhereHas('jobs', function( Builder $query) use ($request) {
+            })->orWhereHas('jobs', function($query) use ($request) {
                 $query->where('employment', $request->filter_job);
 
-            })->orWhereHas('addresses', function( Builder $query) use ($request) {
-                $query->where('district', $request->filter_district)
-                ->orWhere('city', $request->filter_city);
-
             })->latest()->paginate(10);
-
             return view('job.index', compact('candidates', 'addresses', 'education', 'jobs'));
         } 
         else 
         {
-            $candidates = Candidate::join('addresses', 'addresses.candidate_id', '=', 'candidates.id')
+            $candidates = Candidate::join('addresses', 'addresses.candidate_id', 'candidates.id')
             ->join('education', 'education.candidate_id', 'candidates.id')
             ->join('jobs', 'jobs.candidate_id', 'candidates.id')
             ->select('candidates.*', 'addresses.*', 'education.*', 'jobs.employment')->paginate(10);

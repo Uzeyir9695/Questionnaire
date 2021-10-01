@@ -84,13 +84,21 @@
                   <td>{{ date('F d, Y - g:i a', strtotime($candidate->created_at)) }}</td>
                   <td>{{ $candidate->name }}</td>
                   <td>{{ $candidate->surname }}</td>
-                  <td>{{ $candidate->birthday }}</td>
+                  <td>{{ $candidate->age }}</td>
                   <td>{{ $candidate->email }}</td>
                   <td>{{ $candidate->sex }}</td>
-                  <td>{{ $candidate->city }}</td>
-                  <td>{{ $candidate->district }}</td>
-                  <td>{{ $candidate->education}}</td>
-                  <td>{{ $candidate->employment }}</td>
+                  @if($candidate->addresses[$key])
+                  <td>{{ $candidate->addresses[$key]->city }}</td>
+                  @endif
+                  @if($candidate->addresses[$key])
+                  <td>{{ $candidate->addresses[$key]->district }}</td>
+                  @endif
+                  @if ($candidate->education[$key])
+                  <td>{{ $candidate->education[$key]->education }}</td>
+                  @endif
+                  @if ($candidate->jobs[$key])
+                  <td>{{ $candidate->jobs[$key]->employment }}</td>
+                  @endif
               </tr>
             @empty
                <h5 class="text-center text-muted">კანდიდატი არ მოიძებნა!</h5> 
