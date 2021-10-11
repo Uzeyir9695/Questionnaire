@@ -20,7 +20,7 @@ class CreateCandidatesTable extends Migration
             $table->string('surname');
             $table->string('email');
             $table->string('sex');
-            $table->int('age');
+            $table->integer('age');
             $table->timestamps();
         });
     }
