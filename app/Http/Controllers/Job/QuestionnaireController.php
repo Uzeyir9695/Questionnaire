@@ -27,24 +27,22 @@ class QuestionnaireController extends Controller
         $addresses = AddressSeeder::get();
         $education = EducationSeeder::get();
         $jobs = JobSeeder::get();
-        $unify = Candidate::with(['education', 'addresses', 'jobs']);
-        
+
         if($request->has('filter_edu') or $request->has('filter_job') or $request->has('filter_city') or $request->has('filter_district') or $request->has('filter_sex')  ){
-            $candidates = $unify->where('sex', $request->filter_sex)
-            ->orWhereHas('addresses', function($query) use ($request) {
-                $query->where('city', $request->filter_city)
-                ->orWhere('district', $request->filter_district);
+            $candidates = Candidate::join('addresses', 'candidates.id', 'addresses.candidate_id')
+               ->join('education', 'candidates.id', 'education.candidate_id')
+               ->join('jobs', 'candidates.id', 'jobs.candidate_id')
+               ->select('candidates.*', 'addresses.*', 'education.*', 'jobs.employment')
+               ->where('sex', $request->filter_sex)
+               ->orWhere('city', $request->filter_city)
+               ->orWhere('district', $request->filter_district)
+               ->orWhere('education', $request->filter_edu)
+               ->orWhere('employment', $request->filter_job)
+               ->paginate(10);
 
-            })->orWhereHas('education', function($query) use ($request){
-                $query->where('education', $request->filter_edu); 
-
-            })->orWhereHas('jobs', function($query) use ($request) {
-                $query->where('employment', $request->filter_job);
-
-            })->latest()->paginate(10);
             return view('job.index', compact('candidates', 'addresses', 'education', 'jobs'));
-        } 
-        else 
+        }
+        else
         {
             $candidates = Candidate::join('addresses', 'addresses.candidate_id', 'candidates.id')
             ->join('education', 'education.candidate_id', 'candidates.id')
@@ -52,8 +50,7 @@ class QuestionnaireController extends Controller
             ->select('candidates.*', 'addresses.*', 'education.*', 'jobs.employment')->paginate(10);
             return view('job.index', compact('candidates', 'addresses', 'education', 'jobs'));
         }
-    // }
-        
+
     }
 
     /**
@@ -74,7 +71,7 @@ class QuestionnaireController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     // Getting of an apartment value
     $array = array_filter($request->apartment);
     $key_value = array_values($array);
@@ -94,7 +91,7 @@ class QuestionnaireController extends Controller
     $array = array_filter($request->end_date);
     $key_value = array_values($array);
     $end_value = implode('',$key_value);
-        
+
     $candidates = Candidate::create([
         'user_id' => Auth::user()->id,
         'name' => $request->name,
@@ -103,7 +100,7 @@ class QuestionnaireController extends Controller
         'sex' => $request->sex,
         'age' => $request->age
     ]);
-    
+
     Address::create([
         'user_id' => Auth::user()->id,
         'candidate_id' => $candidates->id,
@@ -117,10 +114,10 @@ class QuestionnaireController extends Controller
         'user_id' => Auth::user()->id,
         'candidate_id' => $candidates->id,
         'education' => $request->education,
-        'profession' => $profession_value, 
+        'profession' => $profession_value,
         'start-date' => $start_value,
         'end-date' => $end_value
-    ]); 
+    ]);
 
     foreach($request->jobs as $job){
         Job::create([
