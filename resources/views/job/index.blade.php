@@ -6,8 +6,8 @@
     <a href="{{ route('jobs.export') }}" class="btn btn-warning ml-5 float-right">დაექსპორტება</a>
     <form action="{{ route('jobs.index') }}" method="GET">
         @csrf
-            <div class="row justify-content-center">
-                <div class="form-group mr-3">
+            <div class="row justify-content-center py-5">
+                <div class="form-group mr-3 col-12 col-md-2">
                     <label for="city">ქალაქი</label>
                     <select name="filter_city" id="city"  class="form-control">
                         <option value=" ">აირჩიე</option>
@@ -16,7 +16,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group mr-3">
+                <div class="form-group mr-3 col-12 col-md-2">
                     <label for="district">რაიონი</label>
                     <select name="filter_district" id="district"  class="form-control">
                         <option value="">აირჩიე</option>
@@ -25,7 +25,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group mr-3">
+                <div class="form-group mr-3 col-12 col-md-2">
                     <label for="sex">სქესი</label>
                     <select name="filter_sex" id="sex"  class="form-control">
                         <option value="">აირჩიე</option>
@@ -33,7 +33,7 @@
                         <option value="მდედრობითი" {{ ((request('filter_sex') == 'მდედრობითი')) ? 'selected':''  }}>მდედრობითი</option>
                     </select>
                 </div>
-                <div class="form-group mr-3">
+                <div class="form-group mr-3 col-12 col-md-2">
                     <label for="education">განათლება</label>
                     <select name="filter_edu" id="education"  class="form-control">
                         <option value="">აირჩიე</option>
@@ -43,8 +43,8 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group w-25">
-                    <label for="job">დასაქმების სფერო</label>
+                <div class="form-group w-25 col-12 col-md-2">
+                    <label for="job">სფერო</label>
                     <select name="filter_job" id="job"  class="form-control">
                         <option value="">აირჩიე</option>
                         @foreach ($jobs as $job)

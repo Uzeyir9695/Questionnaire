@@ -49,8 +49,7 @@ class QuestionnaireController extends Controller
                 ->when(!empty($request->filter_job), function ($query) use($request){
 
                     return $query->orWhere('employment', $request->filter_job);
-                })
-               ->paginate(10);
+                })->paginate(10);
 
             return view('job.index', compact('candidates', 'addresses', 'education', 'jobs'));
         }
