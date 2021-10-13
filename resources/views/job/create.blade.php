@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 offset-md-2 animate__animated animate__bounceInDown">
-            <a class="btn btn-info" href="{{ route('jobs.index') }}">კანდიდატთა ლისტის ნახვა</a>
+            <a class="btn btn-info mb-5" href="{{ route('jobs.index') }}">კანდიდატთა ლისტის ნახვა</a>
             @if(Session::has('success'))
             <div class="alert alert-success my-3 text-center animate__animated animate__bounceIn">
                 {{ Session::get('success') }}
@@ -36,7 +36,7 @@
                     <button class="btn btn-info dropdown-toggle w-100" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       მისამართი
                     </button>
-                    
+
                     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                         @foreach ($addresses->unique('city') as $city)
                         <li class="dropdown-submenu">
@@ -70,7 +70,7 @@
                     <label for="email">მეილი:</label>
                     <input type="email" name="email" id="email" class="form-control" required>
                 </div>
-                
+
                 {{-- Education Section--}}
                 <div class="dropdown">
                     <button class="btn btn-info dropdown-toggle w-100" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
