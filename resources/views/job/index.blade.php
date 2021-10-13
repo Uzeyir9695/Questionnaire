@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <a class="btn btn-info" href="{{ route('jobs.send') }}">იმფორმაციის გაგზავნა</a>
+    <a class="btn btn-info" href="{{ route('jobs.send') }}">კითხვარის შევსება</a>
     <a href="{{ route('jobs.export') }}" class="btn btn-warning ml-5 float-right">დაექსპორტება</a>
     <form action="{{ route('jobs.index') }}" method="GET">
         @csrf
